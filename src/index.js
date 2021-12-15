@@ -4,30 +4,33 @@
 require('./index.css').toString();
 const {make} = require('./util');
 
-class AlignmentBlockTune {
+import IconSpoilerHeader from './assets/spoiler-header.svg';
+import IconSpoilerContent from './assets/spoiler-content.svg';
+
+class BlockTypeTunes {
 
     /**
-     * Default alignment
+     * Default type
      *
      * @public
      * @returns {string}
      */
-    static get DEFAULT_ALIGNMENT() {
-        return 'left';
+    static get DEFAULT_TYPE() {
+        return '';
     }
 
     static get isTune() {
         return true;
     }
 
-    getAlignment(){
+    getType(){
         if(!!this.settings?.blocks && this.settings.blocks.hasOwnProperty(this.block.name)){
             return this.settings.blocks[this.block.name]
         }
         if(!!this.settings?.default){
             return this.settings.default
         }
-        return AlignmentBlockTune.DEFAULT_ALIGNMENT
+        return BlockTypeTunes.DEFAULT_TYPE
     }
     /**
      *
@@ -49,26 +52,23 @@ class AlignmentBlockTune {
           },
          */
         this.settings = config;
-        this.data = data || { alignment: this.getAlignment() }
-        this.alignmentSettings = [
+        this.data = data || { type: this.getType() }
+        this.typeSettings = [
             {
-                name: 'left',
-                icon: `<svg xmlns="http://www.w3.org/2000/svg" id="Layer" enable-background="new 0 0 64 64" height="20" viewBox="0 0 64 64" width="20"><path d="m54 8h-44c-1.104 0-2 .896-2 2s.896 2 2 2h44c1.104 0 2-.896 2-2s-.896-2-2-2z"/><path d="m54 52h-44c-1.104 0-2 .896-2 2s.896 2 2 2h44c1.104 0 2-.896 2-2s-.896-2-2-2z"/><path d="m10 23h28c1.104 0 2-.896 2-2s-.896-2-2-2h-28c-1.104 0-2 .896-2 2s.896 2 2 2z"/><path d="m54 30h-44c-1.104 0-2 .896-2 2s.896 2 2 2h44c1.104 0 2-.896 2-2s-.896-2-2-2z"/><path d="m10 45h28c1.104 0 2-.896 2-2s-.896-2-2-2h-28c-1.104 0-2 .896-2 2s.896 2 2 2z"/></svg>`
+                name: 'spoilerHeader',
+                label: this.api.i18n.t('Spoiler Header'),
+                icon: IconSpoilerHeader
             },
             {
-                name: 'center',
-                icon: `<svg xmlns="http://www.w3.org/2000/svg" id="Layer" enable-background="new 0 0 64 64" height="20" viewBox="0 0 64 64" width="20"><path d="m54 8h-44c-1.104 0-2 .896-2 2s.896 2 2 2h44c1.104 0 2-.896 2-2s-.896-2-2-2z"/><path d="m54 52h-44c-1.104 0-2 .896-2 2s.896 2 2 2h44c1.104 0 2-.896 2-2s-.896-2-2-2z"/><path d="m46 23c1.104 0 2-.896 2-2s-.896-2-2-2h-28c-1.104 0-2 .896-2 2s.896 2 2 2z"/><path d="m54 30h-44c-1.104 0-2 .896-2 2s.896 2 2 2h44c1.104 0 2-.896 2-2s-.896-2-2-2z"/><path d="m46 45c1.104 0 2-.896 2-2s-.896-2-2-2h-28c-1.104 0-2 .896-2 2s.896 2 2 2z"/></svg>`
+                name: 'spoilerContent',
+                label: this.api.i18n.t('Spoiler Content'),
+                icon: IconSpoilerContent
             },
-            {
-                name: 'right',
-                icon: `<svg xmlns="http://www.w3.org/2000/svg" id="Layer" enable-background="new 0 0 64 64" height="20" viewBox="0 0 64 64" width="20"><path d="m54 8h-44c-1.104 0-2 .896-2 2s.896 2 2 2h44c1.104 0 2-.896 2-2s-.896-2-2-2z"/><path d="m54 52h-44c-1.104 0-2 .896-2 2s.896 2 2 2h44c1.104 0 2-.896 2-2s-.896-2-2-2z"/><path d="m54 19h-28c-1.104 0-2 .896-2 2s.896 2 2 2h28c1.104 0 2-.896 2-2s-.896-2-2-2z"/><path d="m54 30h-44c-1.104 0-2 .896-2 2s.896 2 2 2h44c1.104 0 2-.896 2-2s-.896-2-2-2z"/><path d="m54 41h-28c-1.104 0-2 .896-2 2s.896 2 2 2h28c1.104 0 2-.896 2-2s-.896-2-2-2z"/></svg>`
-            }
         ];
         this._CSS = {
-            alignment: {
-                left: 'ce-tune-alignment--left',
-                center: 'ce-tune-alignment--center',
-                right: 'ce-tune-alignment--right',
+            type: {
+                spoilerHeader: 'ce-blocktune-type--spoilerHeader',
+                spoilerContent: 'ce-blocktune-type--spoilerContent',
             }
         }
     }
@@ -81,7 +81,7 @@ class AlignmentBlockTune {
      */
     wrap(blockContent) {
         this.wrapper = make("div");
-        this.wrapper.classList.toggle(this._CSS.alignment[this.data.alignment])
+        this.wrapper.classList.toggle(this._CSS.type[this.data.type])
         this.wrapper.append(blockContent)
         return this.wrapper
     }
@@ -92,25 +92,31 @@ class AlignmentBlockTune {
      */
     render() {
         const wrapper = make("div");
-        this.alignmentSettings.map(align => {
+        this.typeSettings.map(align => {
             const button = document.createElement('button');
             button.classList.add(this.api.styles.settingsButton);
             button.innerHTML = align.icon;
             button.type = 'button';
 
-            button.classList.toggle(this.api.styles.settingsButtonActive, align.name === this.data.alignment);
+            button.classList.toggle(this.api.styles.settingsButtonActive, align.name === this.data.type);
             wrapper.appendChild(button);
+
+            this.api.tooltip.onHover(button, align.label, {
+                placement: 'top',
+                hidingDelay: 500,
+            })
+
             return button
         }).forEach((element, index, elements) => {
             element.addEventListener('click', () => {
                 this.data = {
-                    alignment: this.alignmentSettings[index].name
+                    type: this.typeSettings[index].name
                 }
                 elements.forEach((el, i) => {
-                    const {name} = this.alignmentSettings[i];
-                    el.classList.toggle(this.api.styles.settingsButtonActive, name === this.data.alignment);
-                    //toggle alignment style class for block
-                    this.wrapper.classList.toggle(this._CSS.alignment[name], name === this.data.alignment)
+                    const {name} = this.typeSettings[i];
+                    el.classList.toggle(this.api.styles.settingsButtonActive, name === this.data.type);
+                    //toggle type style class for block
+                    this.wrapper.classList.toggle(this._CSS.type[name], name === this.data.type)
                 });
             });
         });
@@ -125,4 +131,4 @@ class AlignmentBlockTune {
     }
 }
 
-module.exports = AlignmentBlockTune;
+export default BlockTypeTunes;

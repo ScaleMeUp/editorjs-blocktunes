@@ -1,9 +1,9 @@
-.ce-tune-alignment--right {
-    text-align: right;
+.ce-blocktune-type--spoilerHeader .ce-block__content {
+    border: 2px solid rgb(120 120 120);
+    border-left-width: 0;
+    border-right-width: 0;
+    opacity: 0.75;
 }
-.ce-tune-alignment--center {
-    text-align: center;
-}
-.ce-tune-alignment--left {
-    text-align: left;
+.ce-blocktune-type--spoilerContent .ce-block__content {
+    opacity: 0.6;
 }
