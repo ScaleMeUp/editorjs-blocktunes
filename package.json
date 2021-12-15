@@ -1,5 +1,5 @@
 {
-  "name": "editorjs-blocktunes",
+  "name": "@scalemeup/editorjs-blocktunes",
   "version": "1.0.2",
   "main": "./dist/bundle.js",
   "license": "MIT",
