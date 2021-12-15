@@ -1,6 +1,26 @@
+# EditorJS Block Tunes
+- added tunes to mark block as spoiler header or spoiler content
+
+**Install**
+`yarn add https://github.com/ScaleMeUp/editorjs-blocktunes#speka`
+
+**Connect**
+```js
+import BlockTypeTunes from '@scalemeup/editorjs-blocktunes'
+//...
+new EditorJS({
+    tools: {
+        blockTypeTunes: BlockTypeTunes,
+    },
+    tunes: ['blockTypeTunes'],
+})
+```
+
+---
+
 ![](https://badgen.net/badge/Editor.js/v2.22.3/blue)
 
-# Text Alignment tune tool for Editor.js
+## Text Alignment tune tool for Editor.js
 You can add text alignment to any block.
 
 ![image](https://user-images.githubusercontent.com/2194021/113727385-0c913780-9730-11eb-836e-c536b6c19f23.gif)
