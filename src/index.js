@@ -109,9 +109,10 @@ class BlockTypeTunes {
             return button
         }).forEach((element, index, elements) => {
             element.addEventListener('click', () => {
-                this.data = {
-                    type: this.typeSettings[index].name
-                }
+                const type = this.typeSettings[index].name;
+
+                this.data.type = type === this.data.type ? null: type;
+
                 elements.forEach((el, i) => {
                     const {name} = this.typeSettings[i];
                     el.classList.toggle(this.api.styles.settingsButtonActive, name === this.data.type);
